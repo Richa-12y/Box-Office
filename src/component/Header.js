@@ -15,6 +15,8 @@ const Header = ({
   handleSearchButtonClick,
   filteredData,
   filteredActorData,
+  handleFavouriteButtonClick,
+  starredShows,
 }) => {
   return (
     <header className="header-container">
@@ -85,14 +87,18 @@ const Header = ({
       <div className="tab-content">
         {activeTab === "Home" ? (
           selectedRadio === "show" && filteredData.length > 0 ? (
-            <Home showData={filteredData} isOn={isOn} />
+            <Home
+              showData={filteredData}
+              isOn={isOn}
+              handleFavouriteButtonClick={handleFavouriteButtonClick}
+            />
           ) : selectedRadio === "people" && filteredActorData.length > 0 ? (
             <Actor actorData={filteredActorData} isOn={isOn} />
           ) : (
             <div className="loader">No results found</div>
           )
         ) : (
-          <Starred />
+          <Starred starredShows={starredShows} />
         )}
       </div>
     </header>

@@ -12,7 +12,7 @@ const ParentCard = styled.div`
   padding-bottom: 0px;
 `;
 
-const Home = ({ showData, isOn }) => {
+const Home = ({ showData, isOn, handleFavouriteButtonClick }) => {
   return (
     <ParentCard isOn={isOn}>
       {showData.map((item) => (
@@ -45,7 +45,12 @@ const Home = ({ showData, isOn }) => {
           )}
           <div className="card-footer">
             <a href={item.show.url}>Read More</a>
-            <button className="star-button">&#9734;</button>
+            <button
+              className="star-button"
+              onClick={() => handleFavouriteButtonClick(item)}
+            >
+              &#9734;
+            </button>
           </div>
         </div>
       ))}

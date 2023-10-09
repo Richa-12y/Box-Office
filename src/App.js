@@ -65,7 +65,7 @@ const App = () => {
 
   const [showData, setShowData] = useState([]);
   const [actorData, setActorData] = useState([]);
-
+  const [starredShows, setStarredShows] = useState([]);
   const handleActiveTab = (tab) => {
     setActiveTab(tab);
   };
@@ -121,6 +121,33 @@ const App = () => {
     // Trigger the search when the search button is clicked
     handleShowSearch();
   };
+
+  const isStarred = (item) =>
+    starredShows.some((show) => show.show.id === item.show.id); // Define isStarred function
+
+  const addToStarred = (show) => {
+    setStarredShows([...starredShows, show]);
+  };
+
+  // Callback function to remove a show from the starred list
+  const removeFromStarred = (show) => {
+    const updatedStarredShows = starredShows.filter(
+      (starredShow) => starredShow.show.id !== show.show.id
+    );
+    setStarredShows(updatedStarredShows);
+  };
+
+  const handleFavouriteButtonClick = (item) => {
+    if (!isStarred(item)) {
+      // Add to starred shows
+      addToStarred(item);
+      console.log(item, "ggg");
+    } else {
+      // Remove from starred shows
+      removeFromStarred(item);
+    }
+  };
+
   return (
     <Main>
       <PageContainer isOn={isOn}>
@@ -136,13 +163,16 @@ const App = () => {
           handleActiveTab={handleActiveTab}
           handleRadioChange={handleRadioChange}
           selectedRadio={selectedRadio}
-          // showData={showData}
           filteredActorData={actorData}
           filteredData={showData}
           searchQuery={searchQuery}
           handleInputChange={handleInputChange}
           isOn={isOn}
           handleSearchButtonClick={handleSearchButtonClick}
+          addToStarred={addToStarred} // Pass addToStarred callback
+          removeFromStarred={removeFromStarred}
+          starredShows={starredShows}
+          handleFavouriteButtonClick={handleFavouriteButtonClick}
         />
       </PageContainer>
     </Main>

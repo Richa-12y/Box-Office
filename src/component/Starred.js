@@ -1,6 +1,7 @@
 import React from "react";
 
-const Starred = () => {
+const Starred = ({ starredShows }) => {
+  console.log(starredShows, "hello");
   return <div>This is Starred Components</div>;
 };
 
