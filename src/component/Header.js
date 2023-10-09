@@ -2,17 +2,19 @@ import React from "react";
 import Search from "./Search";
 import Home from "./Home";
 import Starred from "./Starred";
+import Actor from "./Actor";
 
 const Header = ({
   activeTab,
   handleActiveTab,
   handleRadioChange,
   selectedRadio,
-  showData,
   handleInputChange,
   searchQuery,
   isOn,
   handleSearchButtonClick,
+  filteredData,
+  filteredActorData,
 }) => {
   return (
     <header className="header-container">
@@ -82,9 +84,10 @@ const Header = ({
       </div>
       <div className="tab-content">
         {activeTab === "Home" ? (
-          // Render search results if showData is not empty
-          showData.length > 0 ? (
-            <Home showData={showData} isOn={isOn} />
+          selectedRadio === "show" && filteredData.length > 0 ? (
+            <Home showData={filteredData} isOn={isOn} />
+          ) : selectedRadio === "people" && filteredActorData.length > 0 ? (
+            <Actor actorData={filteredActorData} isOn={isOn} />
           ) : (
             <div className="loader">No results found</div>
           )

@@ -64,6 +64,7 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [showData, setShowData] = useState([]);
+  const [actorData, setActorData] = useState([]);
 
   const handleActiveTab = (tab) => {
     setActiveTab(tab);
@@ -84,10 +85,29 @@ const App = () => {
 
   const handleShowSearch = async () => {
     try {
-      const { data } = await axios.get(
-        "https://api.tvmaze.com/search/shows?q=girls"
-      );
-      setShowData(data);
+      if (searchQuery.trim() === "") {
+        setShowData([]);
+        return;
+      }
+      if (selectedRadio === "show") {
+        const { data } = await axios.get(
+          `https://api.tvmaze.com/search/shows?q=${searchQuery}`
+        );
+
+        // Filter the data based on the searchQuery
+        const filteredData = data.filter((item) =>
+          item?.show?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setShowData(filteredData);
+      } else if (selectedRadio === "people") {
+        const { data } = await axios.get(
+          `https://api.tvmaze.com/search/people?q=${searchQuery}`
+        );
+        const filteredActorData = data?.filter((item) =>
+          item?.person?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setActorData(filteredActorData);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -116,7 +136,9 @@ const App = () => {
           handleActiveTab={handleActiveTab}
           handleRadioChange={handleRadioChange}
           selectedRadio={selectedRadio}
-          showData={showData}
+          // showData={showData}
+          filteredActorData={actorData}
+          filteredData={showData}
           searchQuery={searchQuery}
           handleInputChange={handleInputChange}
           isOn={isOn}

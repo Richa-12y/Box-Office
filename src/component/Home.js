@@ -19,7 +19,7 @@ const Home = ({ showData, isOn }) => {
         <div key={item.show.id} className="card-them">
           <div
             className="image-container"
-            style={{ backgroundImage: `url(${item.show.image.medium})` }}
+            style={{ backgroundImage: `url(${item?.show?.image?.medium})` }}
           ></div>
           <strong>{item.show.name}</strong>
           {item.show.summary === null ? (
