@@ -172,7 +172,11 @@ input:checked ~ span {
   color: gray;
   border: 2px solid gray;
 }
-
+.star-button:active {
+  background-color: rgb(172, 172, 247);
+  border: 1px solid rgb(172, 172, 247);
+  color: white;
+}
 strong {
   margin-top: 10px;
   color: blue;
@@ -211,4 +215,56 @@ strong {
   align-items: center;
   justify-content: center;
   gap: 2px;
+}
+
+.star-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 5rem;
+}
+
+.button-back {
+  position: absolute;
+  top: 2%;
+  border-radius: 20px;
+  padding: 3px 12px;
+  background-color: transparent;
+  color: gray;
+  border: 2px solid gray;
+}
+
+.full-details-card {
+  /* border:2px solid red; */
+  display: flex;
+}
+
+.upper-card-container {
+  display: flex;
+  border-bottom: 1px solid gray;
+  gap: 88px;
+  padding-bottom: 20px;
+}
+
+.text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.read-more-button {
+  border-radius: 20px;
+  padding: 3px 12px;
+  background-color: transparent;
+  color: gray;
+  border: 2px solid gray;
 }

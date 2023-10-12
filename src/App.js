@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "./App.css";
 import styled from "styled-components";
-import Header from "./component/Header";
-import axios from "axios";
+import Home from "./component/Home";
+import { Route, Routes } from "react-router-dom";
+import ShowFullDetails from "./component/ShowFullDetails";
 
 const Main = styled.div`
   width: 100%;
@@ -59,95 +60,6 @@ const App = () => {
     setIsOn(!isOn);
   };
 
-  const [activeTab, setActiveTab] = useState("Home");
-  const [selectedRadio, setSelectedRadio] = useState("show");
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const [showData, setShowData] = useState([]);
-  const [actorData, setActorData] = useState([]);
-  const [starredShows, setStarredShows] = useState([]);
-  const handleActiveTab = (tab) => {
-    setActiveTab(tab);
-  };
-
-  const handleRadioChange = (event) => {
-    setSelectedRadio(event.target.value);
-  };
-  const handleInputChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-  /**
-   * https://api.tvmaze.com/shows/1?embed[]=episodes&embed[]=cast
-   * https://api.tvmaze.com/search/people?q=shanu
-   * https://api.tvmaze.com/search/shows?q=girls
-   */
-
-  const handleShowSearch = async () => {
-    try {
-      if (searchQuery.trim() === "") {
-        setShowData([]);
-        return;
-      }
-      if (selectedRadio === "show") {
-        const { data } = await axios.get(
-          `https://api.tvmaze.com/search/shows?q=${searchQuery}`
-        );
-
-        // Filter the data based on the searchQuery
-        const filteredData = data.filter((item) =>
-          item?.show?.name?.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setShowData(filteredData);
-      } else if (selectedRadio === "people") {
-        const { data } = await axios.get(
-          `https://api.tvmaze.com/search/people?q=${searchQuery}`
-        );
-        const filteredActorData = data?.filter((item) =>
-          item?.person?.name?.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setActorData(filteredActorData);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    handleShowSearch();
-  }, []);
-
-  const handleSearchButtonClick = () => {
-    // Trigger the search when the search button is clicked
-    handleShowSearch();
-  };
-
-  const isStarred = (item) =>
-    starredShows.some((show) => show.show.id === item.show.id); // Define isStarred function
-
-  const addToStarred = (show) => {
-    setStarredShows([...starredShows, show]);
-  };
-
-  // Callback function to remove a show from the starred list
-  const removeFromStarred = (show) => {
-    const updatedStarredShows = starredShows.filter(
-      (starredShow) => starredShow.show.id !== show.show.id
-    );
-    setStarredShows(updatedStarredShows);
-  };
-
-  const handleFavouriteButtonClick = (item) => {
-    if (!isStarred(item)) {
-      // Add to starred shows
-      addToStarred(item);
-      console.log(item, "ggg");
-    } else {
-      // Remove from starred shows
-      removeFromStarred(item);
-    }
-  };
-
   return (
     <Main>
       <PageContainer isOn={isOn}>
@@ -158,22 +70,14 @@ const App = () => {
             </Icon>
           </ToggleSlider>
         </ToggleContainer>
-        <Header
-          activeTab={activeTab}
-          handleActiveTab={handleActiveTab}
-          handleRadioChange={handleRadioChange}
-          selectedRadio={selectedRadio}
-          filteredActorData={actorData}
-          filteredData={showData}
-          searchQuery={searchQuery}
-          handleInputChange={handleInputChange}
-          isOn={isOn}
-          handleSearchButtonClick={handleSearchButtonClick}
-          addToStarred={addToStarred} // Pass addToStarred callback
-          removeFromStarred={removeFromStarred}
-          starredShows={starredShows}
-          handleFavouriteButtonClick={handleFavouriteButtonClick}
-        />
+        <Routes>
+          <Route path="/" element={<Home isOn={isOn} />} />
+          <Route
+            exact
+            path="/showfullpage/:id"
+            element={<ShowFullDetails isOn={isOn} />}
+          />
+        </Routes>
       </PageContainer>
     </Main>
   );
